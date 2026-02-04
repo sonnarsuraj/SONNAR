@@ -158,13 +158,13 @@ export function ResultsDisplay({ results, onRegenerate }: ResultsDisplayProps) {
                                 </div>
                             </div>
 
-                            {activePlatform === "youtube" && currentContent.tags && (
+                            {((activePlatform === "youtube" && currentContent.tags) || ((activePlatform === "instagram" || activePlatform === "facebook") && currentContent.hashtags)) && (
                                 <div className="space-y-2">
                                     <div className="flex items-center justify-between">
                                         <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-1">
-                                            <Hash className="h-3 w-3" /> Potential Keywords
+                                            <Hash className="h-3 w-3" /> {activePlatform === "youtube" ? "Potential Keywords" : "Hashtags"}
                                         </label>
-                                        {activePlatform === "instagram" && (
+                                        {(activePlatform === "instagram" || activePlatform === "facebook") && (
                                             <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-500">
                                                 {currentContent.hashtags?.split(" ").length || 0} Hashtags
                                             </span>
