@@ -13,9 +13,6 @@ export function Navbar() {
                     </Link>
                 </div>
                 <nav className="flex items-center space-x-4">
-                    <Link href="/downloader" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
-                        Downloader
-                    </Link>
                     <ThemeToggle />
                 </nav>
             </div>
