@@ -18,22 +18,10 @@ export default function Home() {
   const handleGenerate = async (data: { type: string; value: string; mood: string; language: string }) => {
     setIsLoading(true);
     setResults(null);
-    setMetadata(null);
+    // setMetadata(null); // Removed metadata state update
 
     try {
-      // 1. If it's a URL, first try to fetch metadata
-      if (data.type === "url") {
-        const metaRes = await fetch("/api/metadata", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url: data.value }),
-        });
-        const metaData = await metaRes.json();
-        console.log("Metadata received:", metaData.metadata);
-        setMetadata(metaData.metadata);
-      }
-
-      // 2. Generate content
+      // 1. Generate content
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -77,37 +65,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               className="container mx-auto"
             >
-              {metadata && metadata.thumbnail && (
-                <div className="max-w-4xl mx-auto px-4 mb-8">
-                  <div className="bg-card rounded-2xl border p-4 flex gap-4 items-center animate-fade-in shadow-sm">
-                    <div className="relative h-20 w-36 bg-muted rounded-lg overflow-hidden flex-shrink-0">
-                      <img
-                        src={metadata.thumbnail}
-                        alt={metadata.title}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-bold text-foreground line-clamp-1">{metadata.title}</h4>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{metadata.description}</p>
-                    </div>
-                    {metadata.videoUrl && (
-                      <div className="flex-shrink-0">
-                        <a
-                          href={metadata.videoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          download="video.mp4"
-                          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-xl text-sm font-bold hover:opacity-90 transition-all shadow-md active:scale-95"
-                        >
-                          <Download className="h-4 w-4" />
-                          Download
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
+              {/* Removed metadata display UI */}
 
               <ResultsDisplay
                 results={results}
