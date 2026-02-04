@@ -1,17 +1,19 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
-const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || "");
 
 export async function POST(req: Request) {
   try {
     const { type, value, mood, language } = await req.json();
 
     const modelName = "gemini-flash-latest";
-    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
     if (!apiKey || apiKey === "your_gemini_api_key_here") {
-      return NextResponse.json({ error: "API Key is missing. Please update your .env.local file." }, { status: 401 });
+      return NextResponse.json({
+        error: "API Key is missing. Please check your Vercel Environment Variables or .env.local file."
+      }, { status: 401 });
     }
 
     const model = genAI.getGenerativeModel({ model: modelName });
