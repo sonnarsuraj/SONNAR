@@ -8,17 +8,14 @@ import { ResultsDisplay, GenerationResult } from "@/components/results-display";
 import { LoadingIndicator } from "@/components/loading-indicator";
 import { Footer } from "@/components/footer";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, ExternalLink } from "lucide-react";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<GenerationResult | null>(null);
-  const [metadata, setMetadata] = useState<any>(null);
 
   const handleGenerate = async (data: { type: string; value: string; mood: string; language: string }) => {
     setIsLoading(true);
     setResults(null);
-    // setMetadata(null); // Removed metadata state update
 
     try {
       // 1. Generate content
