@@ -94,6 +94,7 @@ export async function POST(req: Request) {
       REQUIRED ATTRIBUTES (CRITICAL):
       - NO WALL OF TEXT: You MUST have at least 2-3 distinct paragraphs for EVERY caption.
       - DOUBLE NEWLINES: Use \n\n between EVERY section. 
+      - EMOJIS (STRATEGIC): Use 3-5 relevant emojis throughout titles and descriptions. Place them strategically to highlight key points and emotions. Examples: 🎥 for video content, 🔥 for trending, 💡 for tips, ✨ for amazing, 🚀 for growth, 😱 for shocking, 💯 for perfect.
       - INSTAGRAM & FACEBOOK FORMAT: 
         1. HOOK (One short sentence, all-caps for Instagram).
         2. [Double Newline]
