@@ -84,10 +84,10 @@ export async function POST(req: Request) {
           "tags": "comma-separated, lowercase, high-search niche keywords + viral tags"
         },
         "instagram": {
-          "description": "Story-driven caption + hook + viral hashtags (all in one text block)"
+          "description": "Story-driven caption with Hook, Body, and Viral Hashtags. Use clear line breaks (\\n\\n) between sections."
         },
         "facebook": {
-          "description": "Combined storytelling caption + viral hashtags (all in one text block)"
+          "description": "Storytelling caption with Hook, Narrative, and Viral Hashtags. Use clear line breaks (\\n\\n) between sections."
         }
       }
 
