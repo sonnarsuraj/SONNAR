@@ -94,18 +94,19 @@ export async function POST(req: Request) {
       REQUIRED ATTRIBUTES:
       - TONE: High energy, casual, and creator-friendly. 
       - EMOJIS: Use emojis frequently but naturally to boost engagement and readability.
-      - READABILITY & SPACING: 
-        - Use DOUBLE NEWLINES (\n\n) between major sections (Hook, Body, Storyline, Hashtags).
-        - Ensure clear paragraph breaks.
+      - READABILITY & SPACING (CRITICAL): 
+        - Use EXACTLY TWO EMPTY LINES (\n\n\n) between major sections (Hook, Body, Storyline, Hashtags).
+        - Each section (Hook, Narrative, Hashtags) must be its own distinct block.
+        - NEVER output a single wall of text.
         - Do not use markdown like bold (**) or bullet points (*) as they might look messy when copy-pasted to all platforms. Use plain text spacing instead.
       - HASHTAGS: 
-        - YouTube description MUST have a high density of hashtags. 
-        - Separate the hashtag block from the main text with three newlines (\n\n\n).
-        - Place the hashtags in a clean, readable block.
+        - YouTube & Instagram descriptions MUST have a high density of hashtags. 
+        - Separate the hashtag block from the main text with EXACTLY THREE newlines (\n\n\n).
+        - Place the hashtags in a clean, readable block at the very end.
       - YouTube: Title MUST start with an emoji, include 2-3 viral hashtags at the end, and be STRICTLY between 90 and 100 characters in total length.
       - YouTube: Description MUST include a clear "Storyline" approach.
-      - Instagram: First line MUST be a "Hook" in ALL-CAPS text (do not use rich formatting like bold).
-      - Facebook: Focus on community, storytelling, and relatability.
+      - Instagram: First line MUST be a "Hook" in ALL-CAPS text. Followed by two newlines, then the body.
+      - Facebook: Focus on community and relatability. Use the same section-break rules as above.
       - Use provided Mood (${mood}) to set the tone.
       - Output EVERYTHING in the specified Language (${language}).
       - STRICT RULE: DO NOT mention "AI", "Artificial Intelligence", "Sora", "OpenAI", or any specific AI technology in the output.
