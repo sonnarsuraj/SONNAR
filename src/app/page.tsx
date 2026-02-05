@@ -26,15 +26,22 @@ export default function Home() {
       });
 
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Generation failed");
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Generation failed");
+        } else {
+          const text = await res.text();
+          console.error("Non-JSON error response:", text);
+          throw new Error(`Server returned an error (${res.status}). This may be a timeout or platform issue.`);
+        }
       }
 
       const result = await res.json();
       setResults(result);
     } catch (error: any) {
-      console.error("Error:", error);
-      alert(error.message || "Something went wrong. Please try again.");
+      console.error("Error details:", error);
+      alert(error.message || "Something went wrong. Please check your connection and try again.");
     } finally {
       setIsLoading(false);
     }
