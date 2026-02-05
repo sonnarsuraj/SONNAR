@@ -83,13 +83,15 @@ export async function POST(req: Request) {
       1. EXCESSIVE DETAIL: Do not just say "a cat". Describe the individual strands of fur, the way the light refracts through the pupils, the dust particles dancing in the air nearby, and the microscopic texture of the ground.
       2. CHARACTER CONSISTENCY: ${characterDetails ? `The user has provided a custom character. You MUST use the provided description (${characterDetails}) and expand on it while maintaining absolute visual consistency for Sora's multi-shot reference capabilities.` : "Create a vivid, unique character with highly specific visual anchors (scars, clothing textures, specific eye colors) that Sora can recognize consistently."}
       3. CINEMATOGRAPHY: Use professional terms (e.g., anamorphic bokeh, 35mm lens, global illumination, ray-traced shadows, subsurface scattering).
-      4. STRUCTURE: Start with the subject and action, followed by details of the environment, lighting, and finally technical camera specs.
+      4. STRUCTURE & SPACING: 
+         - Use DOUBLE NEWLINES (\n\n) between major segments (Subject/Action, Environment, Lighting, Technical Camera Specs).
+         - Ensure the final output is a clean, readable block without markdown characters like **.
       5. SORA 2 FEATURES: Include descriptions of complex interactions and consistent character features.
       6. LENGTH: The final prompt should be a massive, descriptive block of 150-250 words to ensure Sora captures every nuance.
 
       STRICT OUTPUT FORMAT (JSON ONLY):
       {
-        "finalPrompt": "The full ULTRA-DETAILED Sora prompt here...",
+        "finalPrompt": "The full ULTRA-DETAILED Sora prompt with proper spacing (\n\n) here...",
         "breakdown": {
           "subjectDetails": "Exceedingly detailed description of the subject and action",
           "environment": "Hyper-specific details about the setting and atmosphere",

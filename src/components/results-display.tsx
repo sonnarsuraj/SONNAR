@@ -164,7 +164,7 @@ export function ResultsDisplay({ results, onRegenerate }: ResultsDisplayProps) {
                                     <textarea
                                         readOnly
                                         value={currentContent.description}
-                                        className="w-full min-h-[200px] p-4 pr-12 bg-muted/20 border rounded-xl leading-relaxed focus:outline-none resize-none text-base"
+                                        className="w-full min-h-[300px] p-6 pr-12 bg-muted/20 border rounded-2xl leading-[1.8] focus:outline-none resize-none text-base font-medium whitespace-pre-wrap"
                                     />
                                     <button
                                         onClick={() => handleCopy(currentContent.description, "desc")}

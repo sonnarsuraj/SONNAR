@@ -134,7 +134,7 @@ export default function SoraPage() {
                                     <textarea
                                         readOnly
                                         value={result.finalPrompt}
-                                        className="w-full min-h-[160px] p-6 bg-muted/20 border rounded-2xl leading-relaxed focus:outline-none resize-none text-lg font-medium italic text-foreground/90"
+                                        className="w-full min-h-[250px] p-8 bg-muted/20 border rounded-2xl leading-[1.8] focus:outline-none resize-none text-lg font-medium italic text-foreground/90 whitespace-pre-wrap"
                                     />
                                 </div>
 
