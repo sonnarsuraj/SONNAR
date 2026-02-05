@@ -3,6 +3,28 @@ import { NextResponse } from "next/server";
 
 // genAI will be initialized inside POST with the resolved key
 
+function repairAndParseJSON(text: string) {
+  try {
+    // 1. Try standard parse first
+    return JSON.parse(text);
+  } catch (e) {
+    // 2. Try to extract from markdown blocks or generic braces
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      try {
+        return JSON.parse(jsonMatch[0]);
+      } catch (innerE) {
+        // 3. Last ditch: try to clean common AI mistakes (trailing commas, etc)
+        const cleaned = jsonMatch[0]
+          .replace(/,\s*\}/g, "}")
+          .replace(/,\s*\]/g, "]");
+        return JSON.parse(cleaned);
+      }
+    }
+    throw new Error("Could not find or repair valid JSON in AI response");
+  }
+}
+
 async function generateWithGroq(prompt: string, apiKey: string) {
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
@@ -26,7 +48,7 @@ async function generateWithGroq(prompt: string, apiKey: string) {
 
   const data = await response.json();
   const content = data.choices[0].message.content;
-  return JSON.parse(content);
+  return repairAndParseJSON(content);
 }
 
 export async function POST(req: Request) {
@@ -89,13 +111,7 @@ export async function POST(req: Request) {
       const response = await result.response;
       const text = response.text();
 
-      // Extract JSON from potentially markdown-fenced response
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        throw new Error("Failed to generate valid JSON from AI");
-      }
-
-      return NextResponse.json(JSON.parse(jsonMatch[0]));
+      return NextResponse.json(repairAndParseJSON(text));
     } catch (geminiError: any) {
       console.warn("Gemini failed, falling back to Groq:", geminiError.message || geminiError);
 

@@ -8,14 +8,22 @@ import { ResultsDisplay, GenerationResult } from "@/components/results-display";
 import { LoadingIndicator } from "@/components/loading-indicator";
 import { Footer } from "@/components/footer";
 import { motion, AnimatePresence } from "framer-motion";
+import { AlertCircle, X } from "lucide-react";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<GenerationResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleGenerate = async (data: { type: string; value: string; mood: string; language: string }) => {
+    if (!data.value.trim()) {
+      setError("Please enter a link or description first.");
+      return;
+    }
+
     setIsLoading(true);
     setResults(null);
+    setError(null);
 
     try {
       // 1. Generate content
@@ -41,7 +49,7 @@ export default function Home() {
       setResults(result);
     } catch (error: any) {
       console.error("Error details:", error);
-      alert(error.message || "Something went wrong. Please check your connection and try again.");
+      setError(error.message || "Something went wrong. Please check your connection and try again.");
     } finally {
       setIsLoading(false);
     }
