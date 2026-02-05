@@ -137,9 +137,9 @@ export async function POST(req: Request) {
       }
     }
   } catch (error: any) {
-    console.error("Content generation error:", error);
+    console.error("Critical failure in content generation pipeline:", error);
 
-    const status = error.message?.includes("missing") ? 401 : 500;
+    const status = error.message?.includes("missing") || error.message?.includes("not configured") ? 401 : 500;
     return NextResponse.json({
       error: error.message || "Failed to generate content. Please try again later."
     }, { status });
