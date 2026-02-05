@@ -100,6 +100,7 @@ export async function POST(req: Request) {
         4. [Double Newline]
         5. HASHTAG BLOCK (Dense and viral).
       - NO MARKDOWN: Never use **bold** or *italics*. Use pure text and emojis only.
+      - HASHTAGS & TAGS: All hashtags, tags, and keywords MUST ALWAYS be in ENGLISH only, even if the rest of the content is in Hindi or Marathi.
       - YouTube: Title MUST start with emoji and include hashtags (STRICTLY 90-100 chars).
       - Tone: ${mood}. Language: ${language}.
       - Output ONLY JSON.
