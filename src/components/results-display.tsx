@@ -85,19 +85,36 @@ export function ResultsDisplay({ results, onRegenerate }: ResultsDisplayProps) {
                     })}
                 </div>
 
-                <div className="p-8 space-y-8">
-                    <div className="flex items-center justify-between">
-                        <h3 className="text-2xl font-outfit font-bold flex items-center gap-2">
-                            <Sparkles className="h-5 w-5 text-primary" />
-                            Viral Strategy for {activePlatform.charAt(0).toUpperCase() + activePlatform.slice(1)}
-                        </h3>
-                        <button
-                            onClick={() => onRegenerate(activePlatform)}
-                            className="flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-                        >
-                            <RefreshCcw className="h-4 w-4" />
-                            Regenerate
-                        </button>
+                <div className="p-4 sm:p-8 space-y-8">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="space-y-1">
+                            <h3 className="text-xl sm:text-2xl font-outfit font-bold flex items-center gap-2">
+                                <Sparkles className="h-5 w-5 text-primary" />
+                                Viral Strategy
+                            </h3>
+                            <p className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
+                                Optimized for {activePlatform}
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={() => {
+                                    const all = [currentContent.title, currentContent.description, currentContent.tags || currentContent.hashtags].filter(Boolean).join("\n\n");
+                                    handleCopy(all, "all");
+                                }}
+                                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-primary/10 text-primary text-sm font-bold hover:bg-primary/20 transition-all active:scale-95"
+                            >
+                                {copiedField === "all" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                                {copiedField === "all" ? "Copied All" : "Copy All"}
+                            </button>
+                            <button
+                                onClick={() => onRegenerate(activePlatform)}
+                                className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors"
+                            >
+                                <RefreshCcw className="h-4 w-4" />
+                                <span className="hidden sm:inline">Regenerate</span>
+                            </button>
+                        </div>
                     </div>
 
                     <AnimatePresence mode="wait">
@@ -125,11 +142,11 @@ export function ResultsDisplay({ results, onRegenerate }: ResultsDisplayProps) {
                                         <textarea
                                             readOnly
                                             value={currentContent.title}
-                                            className="w-full p-4 bg-muted/20 border rounded-xl font-medium focus:outline-none resize-none"
+                                            className="w-full p-4 pr-12 bg-muted/20 border rounded-xl font-medium focus:outline-none resize-none text-base sm:text-lg"
                                         />
                                         <button
                                             onClick={() => handleCopy(currentContent.title || "", "title")}
-                                            className="absolute top-2 right-2 p-2 rounded-lg bg-background/50 backdrop-blur opacity-0 group-hover:opacity-100 transition-opacity hover:bg-muted"
+                                            className="absolute top-2 right-2 p-2.5 rounded-lg bg-background/80 sm:bg-background/50 backdrop-blur opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all hover:bg-muted shadow-sm"
                                         >
                                             {copiedField === "title" ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                                         </button>
@@ -147,11 +164,11 @@ export function ResultsDisplay({ results, onRegenerate }: ResultsDisplayProps) {
                                     <textarea
                                         readOnly
                                         value={currentContent.description}
-                                        className="w-full min-h-[150px] p-4 bg-muted/20 border rounded-xl leading-relaxed focus:outline-none resize-none"
+                                        className="w-full min-h-[200px] p-4 pr-12 bg-muted/20 border rounded-xl leading-relaxed focus:outline-none resize-none text-base"
                                     />
                                     <button
                                         onClick={() => handleCopy(currentContent.description, "desc")}
-                                        className="absolute top-2 right-2 p-2 rounded-lg bg-background/50 backdrop-blur opacity-0 group-hover:opacity-100 transition-opacity hover:bg-muted"
+                                        className="absolute top-2 right-2 p-2.5 rounded-lg bg-background/80 sm:bg-background/50 backdrop-blur opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all hover:bg-muted shadow-sm"
                                     >
                                         {copiedField === "desc" ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                                     </button>
@@ -171,16 +188,16 @@ export function ResultsDisplay({ results, onRegenerate }: ResultsDisplayProps) {
                                         )}
                                     </div>
                                     <div className="relative group">
-                                        <div className="w-full p-4 bg-muted/20 border rounded-xl flex flex-wrap gap-2 pr-12 min-h-[60px]">
+                                        <div className="w-full p-4 pr-12 bg-muted/20 border rounded-xl flex flex-wrap gap-2 min-h-[60px]">
                                             {(currentContent.tags || currentContent.hashtags)?.split(activePlatform === "youtube" ? "," : " ").map((tag, i) => (
-                                                <span key={i} className="px-2 py-1 bg-primary/10 text-primary rounded-md text-sm font-medium">
+                                                <span key={i} className="px-2 py-1 bg-primary/10 text-primary rounded-md text-[13px] font-medium">
                                                     {tag.trim()}
                                                 </span>
                                             ))}
                                         </div>
                                         <button
                                             onClick={() => handleCopy(currentContent.tags || currentContent.hashtags || "", "tags")}
-                                            className="absolute top-2 right-2 p-2 rounded-lg bg-background/50 backdrop-blur opacity-0 group-hover:opacity-100 transition-opacity hover:bg-muted"
+                                            className="absolute top-2 right-2 p-2.5 rounded-lg bg-background/80 sm:bg-background/50 backdrop-blur opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all hover:bg-muted shadow-sm"
                                         >
                                             {copiedField === "tags" ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                                         </button>

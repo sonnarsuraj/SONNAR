@@ -78,23 +78,43 @@ export function InputCard({ onGenerate, isLoading }: InputCardProps) {
                 </div>
 
                 {/* Input Form */}
-                <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                    <div className="space-y-2">
+                <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-6">
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between px-1">
+                            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                                {activeTab === "url" ? "Video URL" : activeTab === "prompt" ? "AI Prompt" : "Video Description"}
+                            </label>
+                            <button
+                                type="button"
+                                onClick={async () => {
+                                    try {
+                                        const text = await navigator.clipboard.readText();
+                                        if (text) setValue(text);
+                                    } catch (err) {
+                                        console.error("Paste failed:", err);
+                                    }
+                                }}
+                                className="flex items-center gap-1.5 py-1.5 px-3 rounded-lg bg-primary/10 text-primary text-[11px] font-bold uppercase tracking-wider hover:bg-primary/20 transition-all active:scale-95"
+                            >
+                                <Sparkles className="h-3 w-3" />
+                                Paste
+                            </button>
+                        </div>
                         <textarea
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
                             placeholder={
                                 activeTab === "url"
-                                    ? "Paste Sora or AI video link (e.g. https://sora.com/video/123...)"
+                                    ? "Paste video link (e.g. YouTube, Instagram...)"
                                     : activeTab === "prompt"
-                                        ? "Paste the AI prompt used to generate the video..."
-                                        : "Describe what's happening in the video in your own words..."
+                                        ? "Paste the AI prompt used for the video..."
+                                        : "Describe what's happening in the video..."
                             }
-                            className="w-full min-h-[120px] p-4 bg-muted/30 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none text-base"
+                            className="w-full min-h-[140px] p-4 bg-muted/30 border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none text-base"
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                         {/* Mood Selector */}
                         <div className="space-y-2">
                             <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground ml-1">
