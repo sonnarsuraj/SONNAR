@@ -3,21 +3,39 @@ import { NextResponse } from "next/server";
 
 // genAI will be initialized inside POST with the resolved key
 
+async function generateWithGroq(prompt: string, apiKey: string) {
+  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      messages: [{ role: "user", content: prompt }],
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.7,
+      max_tokens: 1024,
+      response_format: { type: "json_object" }
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error?.message || "Groq generation failed");
+  }
+
+  const data = await response.json();
+  const content = data.choices[0].message.content;
+  return JSON.parse(content);
+}
+
 export async function POST(req: Request) {
   try {
     const { type, value, mood, language } = await req.json();
 
     const modelName = "gemini-flash-latest";
     const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-
-    if (!apiKey || apiKey === "your_gemini_api_key_here") {
-      return NextResponse.json({
-        error: "API Key is missing. Please check your Vercel Environment Variables or .env.local file."
-      }, { status: 401 });
-    }
-
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: modelName });
+    const groqKey = process.env.GROQ_API_KEY;
 
     const prompt = `
       You are a world-class viral content strategist and social media growth expert.
@@ -59,40 +77,47 @@ export async function POST(req: Request) {
       - Do not include any text other than the JSON object.
     `;
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    try {
+      // 1. Try Gemini first
+      if (!apiKey || apiKey === "your_gemini_api_key_here") {
+        throw new Error("Gemini API Key missing");
+      }
 
-    // Extract JSON from potentially markdown-fenced response
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error("Failed to generate valid JSON from AI");
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: modelName });
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+
+      // Extract JSON from potentially markdown-fenced response
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error("Failed to generate valid JSON from AI");
+      }
+
+      return NextResponse.json(JSON.parse(jsonMatch[0]));
+    } catch (geminiError: any) {
+      console.warn("Gemini failed, falling back to Groq:", geminiError.message || geminiError);
+
+      // 2. Fallback to Groq
+      if (groqKey && groqKey !== "your_groq_api_key_here") {
+        try {
+          const groqData = await generateWithGroq(prompt, groqKey);
+          return NextResponse.json(groqData);
+        } catch (groqError: any) {
+          console.error("Groq fallback also failed:", groqError.message || groqError);
+          throw new Error("All AI providers are currently unavailable. Please try again later.");
+        }
+      } else {
+        throw geminiError; // Rethrow Gemini error if no Groq key available
+      }
     }
-
-    const data = JSON.parse(jsonMatch[0]);
-
-    return NextResponse.json(data);
   } catch (error: any) {
-    console.error("Generation error:", error);
+    console.error("Content generation error:", error);
 
-    if (error.message?.includes("API_KEY_INVALID") || error.status === 401) {
-      return NextResponse.json({
-        error: "Invalid Gemini API Key. Please check your .env.local file."
-      }, { status: 401 });
-    }
-
-    if (error.status === 429) {
-      return NextResponse.json({
-        error: "Quota Exceeded or Propagation Delay. If you just created your API key, please wait 2-5 minutes for it to activate. Also, check your quota at: https://aistudio.google.com/app/plan_and_billing"
-      }, { status: 429 });
-    }
-
-    if (error.status === 404 || error.message?.includes("not found")) {
-      return NextResponse.json({
-        error: "Gemini Model not found. This might be a regional issue. Please check your API configuration."
-      }, { status: 404 });
-    }
-
-    return NextResponse.json({ error: "Failed to generate content. Please try again later." }, { status: 500 });
+    const status = error.message?.includes("missing") ? 401 : 500;
+    return NextResponse.json({
+      error: error.message || "Failed to generate content. Please try again later."
+    }, { status });
   }
 }
