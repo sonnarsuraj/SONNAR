@@ -57,7 +57,7 @@ export async function POST(req: Request) {
 
     const modelName = "gemini-flash-latest";
     const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-    const groqKey = process.env.GROQ_API_KEY;
+    const groqKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY;
 
     const prompt = `
       You are a world-class viral content strategist and social media growth expert.
@@ -113,19 +113,27 @@ export async function POST(req: Request) {
 
       return NextResponse.json(repairAndParseJSON(text));
     } catch (geminiError: any) {
-      console.warn("Gemini failed, falling back to Groq:", geminiError.message || geminiError);
+      console.warn("Gemini failed, checking Groq fallback...");
 
       // 2. Fallback to Groq
-      if (groqKey && groqKey !== "your_groq_api_key_here") {
+      const isGroqConfigured = groqKey && groqKey !== "your_groq_api_key_here" && groqKey.length > 10;
+
+      if (isGroqConfigured) {
         try {
-          const groqData = await generateWithGroq(prompt, groqKey);
+          console.log("Attempting fallback with Groq...");
+          const groqData = await generateWithGroq(prompt, groqKey!);
           return NextResponse.json(groqData);
         } catch (groqError: any) {
           console.error("Groq fallback also failed:", groqError.message || groqError);
-          throw new Error("All AI providers are currently unavailable. Please try again later.");
+          throw new Error(`Primary engine (Gemini) hit a limit and secondary engine (Groq) failed: ${groqError.message}`);
         }
       } else {
-        throw geminiError; // Rethrow Gemini error if no Groq key available
+        console.error("Groq fallback skipped: GROQ_API_KEY is not configured in environment variables.");
+        // If it was a quota error, give a nice message
+        if (geminiError.message?.includes("429") || geminiError.message?.includes("quota")) {
+          throw new Error("Gemini quota exceeded and Groq fallback is not configured. Please add GROQ_API_KEY to your Vercel Environment Variables.");
+        }
+        throw geminiError;
       }
     }
   } catch (error: any) {
