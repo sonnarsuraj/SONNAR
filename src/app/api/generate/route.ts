@@ -79,39 +79,30 @@ export async function POST(req: Request) {
       STRICT OUTPUT FORMAT (JSON ONLY):
       {
         "youtube": {
-          "title": "ONE emoji + high curiosity SEO title + 2-3 viral hashtags. MUST BE STRICTLY BETWEEN 90 AND 100 CHARACTERS LONG.",
-          "description": "Storytelling tone, natural emojis, and a heavy density of hashtags. Ratio: 30% title-context hashtags and 80% viral/trending hashtags (ensure total volume is high).",
-          "tags": "comma-separated, lowercase, high-search niche keywords + viral tags"
+          "title": "ONE emoji + SEO Title + 2-3 Hashtags. (90-100 chars)",
+          "description": "Engaging narrative with clear paragraph breaks and a massive hashtag block at the end."
         },
         "instagram": {
-          "description": "Story-driven caption with Hook, Body, and Viral Hashtags. Use clear line breaks (\\n\\n) between sections."
+          "description": "HOOK IN ALL-CAPS\\n\\nNarrative body with emojis...\\n\\n#viral #hashtags"
         },
         "facebook": {
-          "description": "Storytelling caption with Hook, Narrative, and Viral Hashtags. Use clear line breaks (\\n\\n) between sections."
+          "description": "Engaging Hook...\\n\\nRelatable Storyline...\\n\\n#hashtags"
         }
       }
 
-      REQUIRED ATTRIBUTES:
-      - TONE: High energy, casual, and creator-friendly. 
-      - EMOJIS: Use emojis frequently but naturally to boost engagement and readability.
-      - READABILITY & SPACING (CRITICAL): 
-        - Use EXACTLY TWO EMPTY LINES (\n\n\n) between major sections (Hook, Body, Storyline, Hashtags).
-        - Each section (Hook, Narrative, Hashtags) must be its own distinct block.
-        - NEVER output a single wall of text.
-        - Do not use markdown like bold (**) or bullet points (*) as they might look messy when copy-pasted to all platforms. Use plain text spacing instead.
-      - HASHTAGS: 
-        - YouTube & Instagram descriptions MUST have a high density of hashtags. 
-        - Separate the hashtag block from the main text with EXACTLY THREE newlines (\n\n\n).
-        - Place the hashtags in a clean, readable block at the very end.
-      - YouTube: Title MUST start with an emoji, include 2-3 viral hashtags at the end, and be STRICTLY between 90 and 100 characters in total length.
-      - YouTube: Description MUST include a clear "Storyline" approach.
-      - Instagram: First line MUST be a "Hook" in ALL-CAPS text. Followed by two newlines, then the body.
-      - Facebook: Focus on community and relatability. Use the same section-break rules as above.
-      - Use provided Mood (${mood}) to set the tone.
-      - Output EVERYTHING in the specified Language (${language}).
-      - STRICT RULE: DO NOT mention "AI", "Artificial Intelligence", "Sora", "OpenAI", or any specific AI technology in the output.
-      - STRICT RULE: The content should sound 100% human-made and focus on the visual storytelling of the video itself, not how it was made.
-      - Do not include any text other than the JSON object.
+      REQUIRED ATTRIBUTES (CRITICAL):
+      - NO WALL OF TEXT: You MUST have at least 2-3 distinct paragraphs for EVERY caption.
+      - DOUBLE NEWLINES: Use \n\n between EVERY section. 
+      - INSTAGRAM & FACEBOOK FORMAT: 
+        1. HOOK (One short sentence, all-caps for Instagram).
+        2. [Double Newline]
+        3. STORY/BODY (2-3 sentences explaining the vibe).
+        4. [Double Newline]
+        5. HASHTAG BLOCK (Dense and viral).
+      - NO MARKDOWN: Never use **bold** or *italics*. Use pure text and emojis only.
+      - YouTube: Title MUST start with emoji and include hashtags (STRICTLY 90-100 chars).
+      - Tone: ${mood}. Language: ${language}.
+      - Output ONLY JSON.
     `;
 
     try {
