@@ -79,7 +79,7 @@ export async function POST(req: Request) {
       STRICT OUTPUT FORMAT (JSON ONLY):
       {
         "youtube": {
-          "title": "ONE emoji + high curiosity SEO title. MUST BE BETWEEN 90 AND 100 CHARACTERS LONG.",
+          "title": "ONE emoji + high curiosity SEO title + 2-3 viral hashtags. MUST BE STRICTLY BETWEEN 90 AND 100 CHARACTERS LONG.",
           "description": "Storytelling tone, natural emojis, and a heavy density of hashtags. Ratio: 30% title-context hashtags and 80% viral/trending hashtags (ensure total volume is high).",
           "tags": "comma-separated, lowercase, high-search niche keywords + viral tags"
         },
@@ -96,7 +96,7 @@ export async function POST(req: Request) {
       - EMOJIS: Use emojis frequently but naturally to boost engagement and readability.
       - READABILITY: Use short sentences, line breaks, and clear bullet points.
       - HASHTAGS: YouTube description MUST have a high density of hashtags. Use some that are directly related to the title/content (30%) and the rest should be broad viral tags (80% relative weight).
-      - YouTube: Title MUST start with an emoji and MUST be strictly between 90 and 100 characters.
+      - YouTube: Title MUST start with an emoji, include 2-3 viral hashtags at the end, and be STRICTLY between 90 and 100 characters in total length.
       - YouTube: Description MUST include a "Storyline" approach and a massive block of viral hashtags at the end.
       - Instagram: First line MUST be a "Hook" in all-caps or bold-style text.
       - Facebook: Focus on community, storytelling, and relatability.
