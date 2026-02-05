@@ -80,7 +80,8 @@ export async function POST(req: Request) {
       {
         "youtube": {
           "title": "ONE emoji + SEO Title + 2-3 Hashtags. (90-100 chars)",
-          "description": "Engaging narrative with clear paragraph breaks and a massive hashtag block at the end."
+          "description": "Engaging narrative with clear paragraph breaks and a massive hashtag block at the end.",
+          "tags": "comma, separated, viral, keywords, trending, niche, specific"
         },
         "instagram": {
           "description": "HOOK IN ALL-CAPS\\n\\nNarrative body with emojis...\\n\\n#viral #hashtags"
@@ -101,6 +102,7 @@ export async function POST(req: Request) {
         5. HASHTAG BLOCK (Dense and viral).
       - NO MARKDOWN: Never use **bold** or *italics*. Use pure text and emojis only.
       - HASHTAGS & TAGS: All hashtags, tags, and keywords MUST ALWAYS be in ENGLISH only, even if the rest of the content is in Hindi or Marathi.
+      - YouTube Tags: Generate 15-20 highly relevant, comma-separated tags. Mix of: (1) Niche-specific keywords, (2) Trending viral terms, (3) Searchable phrases. Example: "micro camera, viral video, trending now, camera tricks"
       - YouTube: Title MUST start with emoji and include hashtags (STRICTLY 90-100 chars).
       - Tone: ${mood}. Language: ${language}.
       - Output ONLY JSON.
