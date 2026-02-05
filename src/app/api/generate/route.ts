@@ -59,6 +59,14 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     const groqKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY;
 
+    // Diagnostic logging for Vercel
+    console.log("Environment Diagnostic:", {
+      hasGemini: !!apiKey,
+      geminiPrefix: apiKey ? apiKey.substring(0, 7) + "..." : "none",
+      hasGroq: !!groqKey,
+      groqPrefix: groqKey ? groqKey.substring(0, 7) + "..." : "none"
+    });
+
     const prompt = `
       You are a world-class viral content strategist and social media growth expert.
       Your task is to generate high-quality, viral-ready captions, titles, and tags for a video based on the following input:
@@ -116,7 +124,7 @@ export async function POST(req: Request) {
       console.warn("Gemini failed, checking Groq fallback...");
 
       // 2. Fallback to Groq
-      const isGroqConfigured = groqKey && groqKey !== "your_groq_api_key_here" && groqKey.length > 10;
+      const isGroqConfigured = groqKey && groqKey !== "your_groq_api_key_here" && groqKey.length > 5;
 
       if (isGroqConfigured) {
         try {
@@ -128,10 +136,11 @@ export async function POST(req: Request) {
           throw new Error(`Primary engine (Gemini) hit a limit and secondary engine (Groq) failed: ${groqError.message}`);
         }
       } else {
-        console.error("Groq fallback skipped: GROQ_API_KEY is not configured in environment variables.");
-        // If it was a quota error, give a nice message
+        const detail = !groqKey ? "GROQ_API_KEY is missing" : "GROQ_API_KEY is too short/invalid";
+        console.error(`Groq fallback skipped: ${detail}`);
+
         if (geminiError.message?.includes("429") || geminiError.message?.includes("quota")) {
-          throw new Error("Gemini quota exceeded and Groq fallback is not configured. Please add GROQ_API_KEY to your Vercel Environment Variables.");
+          throw new Error(`Gemini quota exceeded. Groq fallback failed because: ${detail}. Please ensure you've redeployed your Vercel app after adding the keys.`);
         }
         throw geminiError;
       }
