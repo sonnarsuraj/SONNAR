@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { InputCard } from "@/components/input-card";
@@ -14,6 +14,25 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<GenerationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Load results from localStorage on initial mount
+  useEffect(() => {
+    const savedResults = localStorage.getItem("viralCraftResults");
+    if (savedResults) {
+      try {
+        setResults(JSON.parse(savedResults));
+      } catch (e) {
+        console.error("Failed to parse saved results:", e);
+      }
+    }
+  }, []);
+
+  // Save results to localStorage whenever they change
+  useEffect(() => {
+    if (results) {
+      localStorage.setItem("viralCraftResults", JSON.stringify(results));
+    }
+  }, [results]);
 
   const handleGenerate = async (data: { type: string; value: string; mood: string; language: string }) => {
     if (!data.value.trim()) {

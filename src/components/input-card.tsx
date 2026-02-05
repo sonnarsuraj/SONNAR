@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link2, MessageSquare, FileText, Sparkles, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -17,10 +15,10 @@ const moods = [
 ];
 
 const languages = [
-    { id: "en", label: "English" },
-    { id: "es", label: "Spanish" },
-    { id: "fr", label: "French" },
-    { id: "de", label: "German" },
+    { id: "English", label: "English" },
+    { id: "Hinglish", label: "Hinglish" },
+    { id: "Hindi", label: "Hindi" },
+    { id: "Marathi", label: "Marathi" },
 ];
 
 interface InputCardProps {
@@ -32,7 +30,28 @@ export function InputCard({ onGenerate, isLoading }: InputCardProps) {
     const [activeTab, setActiveTab] = useState<Tab>("url");
     const [value, setValue] = useState("");
     const [mood, setMood] = useState("cinematic");
-    const [language, setLanguage] = useState("en");
+    const [language, setLanguage] = useState("English");
+
+    // Load inputs from localStorage on initial mount
+    useEffect(() => {
+        const savedInputs = localStorage.getItem("viralCraftInputs");
+        if (savedInputs) {
+            try {
+                const { activeTab: sTab, value: sValue, mood: sMood, language: sLanguage } = JSON.parse(savedInputs);
+                if (sTab) setActiveTab(sTab);
+                if (sValue) setValue(sValue);
+                if (sMood) setMood(sMood);
+                if (sLanguage) setLanguage(sLanguage);
+            } catch (e) {
+                console.error("Failed to parse saved inputs:", e);
+            }
+        }
+    }, []);
+
+    // Save inputs to localStorage whenever they change
+    useEffect(() => {
+        localStorage.setItem("viralCraftInputs", JSON.stringify({ activeTab, value, mood, language }));
+    }, [activeTab, value, mood, language]);
 
     const tabs = [
         { id: "url", label: "Paste Video URL", icon: Link2 },

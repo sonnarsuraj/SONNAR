@@ -12,7 +12,12 @@ export function Navbar() {
                         <span className="font-outfit text-xl font-bold tracking-tight">ViralCraft</span>
                     </Link>
                 </div>
-                <nav className="flex items-center space-x-4">
+                <nav className="flex items-center space-x-6">
+                    <Link href="/" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Home</Link>
+                    <Link href="/sora" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                        Sora Studio
+                        <span className="text-[10px] bg-primary/10 text-primary px-1.5 rounded-full font-bold">NEW</span>
+                    </Link>
                     <ThemeToggle />
                 </nav>
             </div>

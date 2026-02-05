@@ -79,9 +79,9 @@ export async function POST(req: Request) {
       STRICT OUTPUT FORMAT (JSON ONLY):
       {
         "youtube": {
-          "title": "ONE emoji + high curiosity SEO title (<100 chars)",
-          "description": "Storytelling tone, natural emojis, many viral hashtags, optimized for Shorts/long form",
-          "tags": "comma-separated, lowercase, high-search niche keywords"
+          "title": "ONE emoji + high curiosity SEO title. MUST BE BETWEEN 90 AND 100 CHARACTERS LONG.",
+          "description": "Storytelling tone, natural emojis, and a heavy density of hashtags. Ratio: 30% title-context hashtags and 80% viral/trending hashtags (ensure total volume is high).",
+          "tags": "comma-separated, lowercase, high-search niche keywords + viral tags"
         },
         "instagram": {
           "description": "Story-driven caption + hook + viral hashtags (all in one text block)"
@@ -95,9 +95,9 @@ export async function POST(req: Request) {
       - TONE: High energy, casual, and creator-friendly. 
       - EMOJIS: Use emojis frequently but naturally to boost engagement and readability.
       - READABILITY: Use short sentences, line breaks, and clear bullet points.
-      - HASHTAGS: Use a 50/50 mix of Niche-Specific tags (related to the exact topic) and High-Reach Viral tags (e.g., #viral, #trending, #explorepage).
-      - YouTube: Title MUST start with an emoji.
-      - YouTube: Description MUST include a "Storyline" approach.
+      - HASHTAGS: YouTube description MUST have a high density of hashtags. Use some that are directly related to the title/content (30%) and the rest should be broad viral tags (80% relative weight).
+      - YouTube: Title MUST start with an emoji and MUST be strictly between 90 and 100 characters.
+      - YouTube: Description MUST include a "Storyline" approach and a massive block of viral hashtags at the end.
       - Instagram: First line MUST be a "Hook" in all-caps or bold-style text.
       - Facebook: Focus on community, storytelling, and relatability.
       - Use provided Mood (${mood}) to set the tone.
